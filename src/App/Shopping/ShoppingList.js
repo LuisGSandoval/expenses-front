@@ -27,6 +27,9 @@ const ShoppingList = () => {
 
   const decreaseItem = id => {
     const { ind, elem } = filteredItem(id);
+
+    if (elem[0].qty < 2) return;
+
     elem[0].qty = elem[0].qty - 1;
     updateList(productList, ind, elem[0]);
   };
@@ -53,7 +56,7 @@ const ShoppingList = () => {
         {productList &&
           productList.length > 0 &&
           productList.map(item => (
-            <tr key={item.id} onDoubleClick={() => moreOPtions(item.id)}>
+            <tr key={item.id}>
               <td>
                 {item.added ? (
                   <Button
@@ -72,7 +75,7 @@ const ShoppingList = () => {
                   </Button>
                 )}
               </td>
-              <td>
+              <td onDoubleClick={() => moreOPtions(item.id)}>
                 <span>$ {(item.qty * item.productPrice).toLocaleString()}</span>
                 <br />
                 <span className="text-secondary">
