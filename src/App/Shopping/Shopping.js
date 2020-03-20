@@ -11,7 +11,7 @@ const Shopping = () => {
     <>
       <Navbar />
 
-      <div className="container mx-5">
+      <div className="container my-5">
         <Total />
         <ListForm />
         <ShoppingList />
