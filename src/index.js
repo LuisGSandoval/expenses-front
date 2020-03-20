@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App/Index";
+import App from "./App/Router";
 import * as serviceWorker from "./serviceWorker";
-import Store from "./state/Store";
+import Store from "./Store/Store";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 

@@ -20,6 +20,16 @@ function reducer(state, action) {
         ...state,
         productList: action.payload
       };
+    case "TOGGLE_MODAL":
+      return {
+        ...state,
+        modal: action.payload
+      };
+    case "SELECTED_ITEM":
+      return {
+        ...state,
+        selectedItemId: action.payload
+      };
 
     default:
       return Error("reducer error");
@@ -30,7 +40,9 @@ function reducer(state, action) {
 
 let provProd = window.localStorage.getItem("shoppingListProducts");
 const initialState = {
-  productList: provProd ? JSON.parse(provProd) : []
+  productList: provProd ? JSON.parse(provProd) : [],
+  modal: false,
+  selectedItemId: false
 };
 
 export default function Store(props) {

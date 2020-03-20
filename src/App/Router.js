@@ -3,7 +3,7 @@ import Menu from "./Menu";
 import Shopping from "./Shopping/Shopping";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-const index = () => {
+const Router = () => {
   return (
     <div>
       <BrowserRouter>
@@ -16,4 +16,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Router;

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { CTX } from "../../state/Store";
+import { CTX } from "../../Store/Store";
 import { Table, Button } from "reactstrap";
 
 const ShoppingList = () => {
@@ -7,17 +7,44 @@ const ShoppingList = () => {
 
   const { productList } = state;
 
-  const enableItem = (id, newStatus) => {
-    console.log(id, newStatus);
-
+  const filteredItem = id => {
     let ind = productList.findIndex(x => x.id === id);
     let elem = productList.filter(x => x.id === id);
+    return { ind, elem };
+  };
 
+  const enableItem = (id, newStatus) => {
+    const { ind, elem } = filteredItem(id);
     elem[0].added = newStatus;
+    updateList(productList, ind, elem[0]);
+  };
 
-    productList.splice(ind, 1, elem[0]);
+  const increaseQty = id => {
+    const { ind, elem } = filteredItem(id);
+    elem[0].qty = elem[0].qty + 1;
+    updateList(productList, ind, elem[0]);
+  };
 
+  const decreaseItem = id => {
+    const { ind, elem } = filteredItem(id);
+    elem[0].qty = elem[0].qty - 1;
+    updateList(productList, ind, elem[0]);
+  };
+
+  const updateList = (productList, ind, elm) => {
+    productList.splice(ind, 1, elm);
     dispatch({ type: "UPDATE_PRODUCT_LIST", payload: productList });
+  };
+
+  /* Long press event */
+
+  const moreOPtions = id => {
+    dispatch({ type: "SELECTED_ITEM", payload: id });
+
+    dispatch({
+      type: "TOGGLE_MODAL",
+      payload: { open: true, content: "moreOptions" }
+    });
   };
 
   return (
@@ -26,8 +53,8 @@ const ShoppingList = () => {
         {productList &&
           productList.length > 0 &&
           productList.map(item => (
-            <tr key={item.id}>
-              <th>
+            <tr key={item.id} onDoubleClick={() => moreOPtions(item.id)}>
+              <td>
                 {item.added ? (
                   <Button
                     color="success"
@@ -44,11 +71,30 @@ const ShoppingList = () => {
                     off
                   </Button>
                 )}
-              </th>
+              </td>
               <td>
-                <span>$ {item.productPrice}</span>
+                <span>$ {(item.qty * item.productPrice).toLocaleString()}</span>
                 <br />
-                <span className="text-secondary">{item.productDesc}</span>
+                <span className="text-secondary">
+                  {item.qty} {item.productDesc} {item.productPrice} unt
+                </span>
+              </td>
+              <td className="d-flex flex-row-reverse">
+                <Button
+                  outline
+                  color="primary"
+                  onClick={() => increaseQty(item.id)}
+                >
+                  +
+                </Button>
+                <Button
+                  className="mr-3"
+                  outline
+                  color="primary"
+                  onClick={() => decreaseItem(item.id)}
+                >
+                  -
+                </Button>
               </td>
             </tr>
           ))}

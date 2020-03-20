@@ -12,11 +12,11 @@ const Navbar = () => {
             <GoHome title="home" />
           </NavLink>
         </NavItem>
-        <NavItem>
+        {/* <NavItem>
           <NavLink tag={Link} to="/">
             Expenses
           </NavLink>
-        </NavItem>
+        </NavItem> */}
         {/* <NavItem>
           <NavLink tag={Link}>Another Link</NavLink>
         </NavItem>

@@ -3,7 +3,8 @@ import Navbar from "../../Components/Navbar";
 import Total from "./Total";
 import ListForm from "./ListForm";
 import ShoppingList from "./ShoppingList";
-import DeleteButton from "./DeleteButton";
+import DeleteAllButton from "./DeleteAllButton";
+import AppModal from "../../Components/AppModal";
 
 const Shopping = () => {
   return (
@@ -14,7 +15,8 @@ const Shopping = () => {
         <Total />
         <ListForm />
         <ShoppingList />
-        <DeleteButton />
+        <DeleteAllButton />
+        <AppModal />
       </div>
     </>
   );

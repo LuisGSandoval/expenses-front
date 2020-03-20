@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Table } from "reactstrap";
-import { CTX } from "../../state/Store";
+import { CTX } from "../../Store/Store";
 import { InputGroup, InputGroupAddon, Input, Button } from "reactstrap";
 import { uuid } from "uuidv4";
 
@@ -22,19 +22,20 @@ const ListForm = () => {
       id: uuid(),
       added: true,
       productDesc: productName,
-      productPrice: parseInt(price)
+      productPrice: parseInt(price),
+      qty: 1
     };
 
     let productList = state.productList;
-    productList.push(productInfo);
+    productList.unshift(productInfo);
 
     dispatch({ type: "UPDATE_PRODUCT_LIST", payload: productList });
     setItemForm({ productName: "", price: "" });
   };
 
   return (
-    <div className="mb-3">
-      <Table dark className="mb-0">
+    <div className="mb-4">
+      <Table dark className="mb-1">
         <thead>
           <tr>
             <th>
@@ -50,7 +51,7 @@ const ListForm = () => {
               <InputGroup>
                 <InputGroupAddon addonType="prepend">$</InputGroupAddon>
                 <Input
-                  placeholder="Precio"
+                  placeholder="Precio unidad"
                   min={0}
                   type="number"
                   step="1"
@@ -65,7 +66,7 @@ const ListForm = () => {
       </Table>
       {productName !== "" && price !== 0 && price !== "" && (
         <Button color="info" className="w-100" onClick={addItem}>
-          enviar
+          Guardar
         </Button>
       )}
     </div>
