@@ -28,7 +28,7 @@ const ShoppingList = () => {
   const decreaseItem = id => {
     const { ind, elem } = filteredItem(id);
 
-    if (elem[0].qty < 2) return;
+    if (elem[0].qty < 1) return;
 
     elem[0].qty = elem[0].qty - 1;
     updateList(productList, ind, elem[0]);
@@ -79,7 +79,7 @@ const ShoppingList = () => {
                 <span>$ {(item.qty * item.productPrice).toLocaleString()}</span>
                 <br />
                 <span className="text-secondary">
-                  {item.qty} {item.productDesc} {item.productPrice} unt
+                  {item.qty} {item.productDesc} {item.productPrice} unidad
                 </span>
               </td>
               <td className="d-flex flex-row-reverse">
