@@ -6,10 +6,11 @@ import * as serviceWorker from "./serviceWorker";
 import Store from "./Store/Store";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "flatpickr/dist/themes/material_green.css";
 
 ReactDOM.render(
   <Store>
-    <App />
+    <App className="bg-light" />
   </Store>,
   document.getElementById("root")
 );

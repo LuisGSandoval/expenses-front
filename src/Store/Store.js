@@ -1,48 +1,73 @@
-import React, { useReducer } from "react";
+import React, { useReducer, createContext } from "react";
+import { SL, EF, EL } from "../tools/localStorage"; // Only names
+import { LSAdd, LSGet } from "../tools/localStorage"; // Functions
 
-const CTX = React.createContext();
+const CTX = createContext();
 
 export { CTX };
 
-// Reducer
-
+/**
+ * @description This is the reduces of the store
+ * @param {Object} state State of the app
+ * @param {String} action String the dispatch
+ */
 function reducer(state, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
+    case "TOGGLE_MODAL":
+      return {
+        ...state,
+        modal: payload
+      };
     //******************************* */
     //*         SHOPPING LIST         */
     //******************************* */
     case "UPDATE_PRODUCT_LIST":
-      window.localStorage.setItem(
-        "shoppingListProducts",
-        JSON.stringify(action.payload)
-      );
+      LSAdd(SL, payload);
       return {
         ...state,
-        productList: action.payload
-      };
-    case "TOGGLE_MODAL":
-      return {
-        ...state,
-        modal: action.payload
+        productList: payload
       };
     case "SELECTED_ITEM":
       return {
         ...state,
-        selectedItemId: action.payload
+        selectedItemId: payload
+      };
+    //******************************* */
+    //*           EXPENSES            */
+    //******************************* */
+    case "EXPENSE_FORM":
+      LSAdd(EF, payload);
+      return {
+        ...state,
+        expensesForm: payload
       };
 
+    case "EXPENSES_LIST":
+      LSAdd(EL, payload);
+      return {
+        ...state,
+        expensesList: payload
+      };
     default:
       return Error("reducer error");
   }
 }
 
-// Initial state
-
-let provProd = window.localStorage.getItem("shoppingListProducts");
+/**
+ * @description This is the initial state on our app
+ */
 const initialState = {
-  productList: provProd ? JSON.parse(provProd) : [],
+  // global
   modal: false,
-  selectedItemId: false
+
+  // shopping
+  productList: LSGet(SL) ? LSGet(SL) : [],
+  selectedItemId: false,
+
+  // Expenses
+  expensesForm: LSGet(EF) ? LSGet(EF) : false,
+  expensesList: LSGet(EL) ? LSGet(EL) : []
 };
 
 export default function Store(props) {

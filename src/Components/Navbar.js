@@ -2,29 +2,30 @@ import React from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import { Link } from "react-router-dom";
 import { GoHome } from "react-icons/go";
+import { IoIosArrowBack } from "react-icons/io";
 
 const Navbar = () => {
+  const goBack = () => window.history.back();
+
   return (
-    <div className="container">
-      <Nav className="d-flex justify-content-center">
+    <div className="container-fluid">
+      <Nav pills className="d-flex justify-content-between">
         <NavItem>
-          <NavLink tag={Link} to="/">
+          {window.location.pathname !== "/" && (
+            <NavLink onClick={goBack} className="h3">
+              <IoIosArrowBack />
+            </NavLink>
+          )}
+        </NavItem>
+        <NavItem>
+          <NavLink tag={Link} to="/" className="h3">
             <GoHome title="home" />
           </NavLink>
         </NavItem>
-        {/* <NavItem>
-          <NavLink tag={Link} to="/">
-            Expenses
-          </NavLink>
-        </NavItem> */}
-        {/* <NavItem>
-          <NavLink tag={Link}>Another Link</NavLink>
-        </NavItem>
+
         <NavItem>
-          <NavLink disabled tag={Link}>
-            Disabled Link
-          </NavLink>
-        </NavItem> */}
+          <NavLink> </NavLink>
+        </NavItem>
       </Nav>
     </div>
   );
