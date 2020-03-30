@@ -15,7 +15,7 @@ const Router = () => {
           <Route path="/expenses" component={Expenses} exact />
           <Route path="/expenses/monthly" component={MonthlyList} exact />
           <Route path="/expenses/list" component={ExpenseList} exact />
-          <Route path="/expenses/:date" component={Expenses} exact />
+          <Route path="/expenses/date/:date" component={ExpenseList} exact />
           <Route path="/" component={Menu} />
         </Switch>
       </BrowserRouter>
