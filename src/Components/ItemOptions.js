@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import { CTX } from "../Store/Store";
 import { Button } from "reactstrap";
 
-const regex = RegExp("expenses", "g");
-
 const ItemOptions = () => {
   const [state, dispatch] = useContext(CTX);
 
@@ -36,13 +34,9 @@ const ItemOptions = () => {
       <Button outline color="danger" className="w-100" onClick={deleteItem}>
         Borrar
       </Button>
-      {regex.test(window.location.pathname) && (
-        <Button
-          outline
-          color="danger"
-          className="mt-3 w-100"
-          onClick={toglePayed}
-        >
+
+      {window.location.pathname.includes("expenses") && (
+        <Button outline color="success" className="w-100" onClick={toglePayed}>
           cambiar estado de pagado
         </Button>
       )}

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Button } from "reactstrap";
 import { CTX } from "../../Store/Store";
-import { uuid } from "uuidv4";
+import { Link } from "react-router-dom";
 
 const Options = () => {
   const [, dispatch] = useContext(CTX);
@@ -13,36 +13,20 @@ const Options = () => {
     });
   };
 
-  const addExpense = type => {
-    dispatch({
-      type: "EXPENSE_FORM",
-      payload: {
-        id: uuid(),
-        in: type,
-        description: "",
-        title: "",
-        qty: "",
-        date: "",
-        payed: false,
-        type: "expense"
-      }
-    });
-
-    toogleModal();
-  };
-
   return (
-    <div className="container text-center my-5">
-      <h3>Agregar</h3>
-
-      <div className="d-flex justify-content-around mt-5">
-        <Button color="success" onClick={() => addExpense(true)}>
-          Entrada
-        </Button>
-        <Button color="danger" outline onClick={() => addExpense(false)}>
-          Gastos
-        </Button>
-      </div>
+    <div className="container text-center">
+      {window.location.pathname.includes("/expenses/monthly") ? (
+        <Link className="btn btn-outline-secondary" to="/expenses">
+          ver grafica
+        </Link>
+      ) : (
+        <Link className="btn btn-outline-secondary" to="/expenses/monthly">
+          ver detalle
+        </Link>
+      )}
+      <Button color="success" onClick={toogleModal}>
+        Agregar
+      </Button>
     </div>
   );
 };

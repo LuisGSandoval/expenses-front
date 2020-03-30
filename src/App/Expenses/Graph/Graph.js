@@ -12,7 +12,7 @@ const Graph = () => {
   };
   return (
     <div>
-      <Nav tabs className="container-md" fill justified>
+      <Nav tabs className="container-md bg-secondary" fill justified>
         <NavItem>
           <NavLink
             className={`${activeTab === "1" ? "active" : ""} `}
@@ -44,7 +44,10 @@ const Graph = () => {
           </NavLink>
         </NavItem>
       </Nav>
-      <TabContent className="container-md" activeTab={activeTab}>
+      <TabContent
+        className="container-md graph-container"
+        activeTab={activeTab}
+      >
         <TabPane tabId="1">
           <GraphExpenses />
         </TabPane>

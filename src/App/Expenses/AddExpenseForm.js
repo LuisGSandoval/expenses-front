@@ -1,12 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CTX } from "../../Store/Store";
 import { Button, Form, FormGroup, Label, Input, CustomInput } from "reactstrap";
 import Flatpickr from "react-flatpickr";
+import { uuid } from "uuidv4";
+import { useCallback } from "react";
 
 const AddExpenseForm = () => {
   const [state, dispatch] = useContext(CTX);
   const { expensesForm, expensesList } = state;
-  const { title, qty, date, description } = expensesForm;
+  const { title, qty, date, description, income } = expensesForm;
+
+  const addExpense = useCallback(
+    () =>
+      dispatch({
+        type: "EXPENSE_FORM",
+        payload: {
+          id: uuid(),
+          income: "0",
+          description: "",
+          title: "",
+          qty: "",
+          date: "",
+          payed: false
+        }
+      }),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    addExpense();
+    return () => {
+      addExpense();
+    };
+  }, [addExpense]);
 
   const createExpense = e => {
     e.preventDefault();
@@ -34,6 +60,20 @@ const AddExpenseForm = () => {
 
   return (
     <Form className="container my-3" onSubmit={createExpense}>
+      <div className="form-group">
+        <label htmlFor="income">Tipo</label>
+        <select
+          className="form-control"
+          name="income"
+          id="income"
+          onChange={handleChange}
+          value={income}
+        >
+          <option value="0">Gasto</option>
+          <option value="1">Ingreso</option>
+        </select>
+      </div>
+
       <FormGroup>
         <Label for="title">* Título</Label>
         <Input

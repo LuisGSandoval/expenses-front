@@ -8,23 +8,23 @@ const Navbar = () => {
   const goBack = () => window.history.back();
 
   return (
-    <div className="container-fluid">
+    <div className="bg-dark container-fluid">
       <Nav pills className="d-flex justify-content-between">
         <NavItem>
           {window.location.pathname !== "/" && (
-            <NavLink onClick={goBack} className="h3">
+            <NavLink onClick={goBack} className="text-white h3">
               <IoIosArrowBack />
             </NavLink>
           )}
         </NavItem>
         <NavItem>
-          <NavLink tag={Link} to="/" className="h3">
+          <NavLink tag={Link} to="/" className="text-white h3">
             <GoHome title="home" />
           </NavLink>
         </NavItem>
 
         <NavItem>
-          <NavLink> </NavLink>
+          {window.location.pathname !== "/" && <NavLink> </NavLink>}
         </NavItem>
       </Nav>
     </div>

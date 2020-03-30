@@ -18,8 +18,6 @@ const ExpenseList = () => {
   const { expensesList } = state;
 
   const moreOPtions = id => {
-    alert(id);
-
     dispatch({ type: "SELECTED_ITEM", payload: id });
     dispatch({
       type: "TOGGLE_MODAL",
@@ -31,7 +29,7 @@ const ExpenseList = () => {
     <>
       <Navbar />
       <AppModal />
-      <div className="container">
+      <div className="container mb-5">
         <ListGroup>
           {expensesList &&
             expensesList.length > 0 &&
