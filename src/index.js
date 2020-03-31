@@ -1,16 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App/Router";
 import * as serviceWorker from "./serviceWorker";
 import Store from "./Store/Store";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "flatpickr/dist/themes/material_green.css";
+import "./index.css";
+
+document.body.classList.add("bg-dark");
 
 ReactDOM.render(
   <Store>
-    <App className="bg-light" />
+    <App />
   </Store>,
   document.getElementById("root")
 );

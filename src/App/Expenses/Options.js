@@ -14,19 +14,21 @@ const Options = () => {
   };
 
   return (
-    <div className="container text-center">
-      {window.location.pathname.includes("/expenses/monthly") ? (
-        <Link className="btn btn-outline-secondary" to="/expenses">
-          ver grafica
-        </Link>
-      ) : (
-        <Link className="btn btn-outline-secondary" to="/expenses/monthly">
-          ver detalle
-        </Link>
-      )}
-      <Button color="success" onClick={toogleModal}>
-        Agregar
-      </Button>
+    <div className="bg-dark pt-3 pb-3">
+      <div className="container text-center">
+        {window.location.pathname.includes("/expenses/monthly") ? (
+          <Link className="btn btn-outline-secondary" to="/expenses">
+            ver grafica
+          </Link>
+        ) : (
+          <Link className="btn btn-outline-secondary" to="/expenses/monthly">
+            ver detalle
+          </Link>
+        )}
+        <Button color="success" onClick={toogleModal}>
+          Agregar
+        </Button>
+      </div>
     </div>
   );
 };

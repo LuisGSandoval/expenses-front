@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-dark container-fluid">
-      <Nav pills className="d-flex justify-content-between">
+      <Nav className="d-flex justify-content-between">
         <NavItem>
           {window.location.pathname !== "/" && (
             <NavLink onClick={goBack} className="text-white h3">

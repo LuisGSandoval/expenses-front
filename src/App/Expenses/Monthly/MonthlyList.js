@@ -23,9 +23,13 @@ const MonthlyList = () => {
     <div className="bg-dark pb-5">
       <div className="container">
         {expenses.map((ele, i) => (
-          <Link key={i} className="pt-5" to={`/expenses/date/${ele.date}`}>
+          <Link
+            key={i}
+            className="pt-5 monthly-card"
+            to={`/expenses/date/${ele.date}`}
+          >
             <div>
-              <h4 className="text-white">
+              <h4 className="text-white mt-4">
                 {ele.date ? format(new Date(ele.date), "MMMM-yyyy") : ""}
               </h4>
               <ListGroup>

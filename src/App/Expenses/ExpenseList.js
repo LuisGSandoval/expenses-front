@@ -45,12 +45,14 @@ const ExpenseList = props => {
       <Navbar />
       <AppModal />
       <div className="container mb-5">
-        <h4 className="text-white mt-3">{props.match.params.date}</h4>
+        <h4 className="text-white mt-3">
+          {format(new Date(props.match.params.date), "yyyy-MMM-dd")}
+        </h4>
         <ListGroup>
           {list.map(item => (
             <ListGroupItem
               key={item.id}
-              className=" bg-light text-center text-secondary  "
+              className="bg-light text-center text-secondary"
             >
               <div className="row" onDoubleClick={() => moreOPtions(item.id)}>
                 <div className="col-5">
@@ -62,7 +64,9 @@ const ExpenseList = props => {
 
                 <div className="col-5">
                   <ListGroupItemHeading
-                    className={`text-${item.in ? "success" : "danger"}`}
+                    className={`text-${
+                      item.income === "1" ? "success" : "danger"
+                    }`}
                   >
                     $ {parseInt(item.qty).toLocaleString()}
                   </ListGroupItemHeading>
