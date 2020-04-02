@@ -22,4 +22,8 @@ const createListBy = (property, collection) => {
   return result;
 };
 
-export { createListBy };
+const sum = (arr, key) => {
+  return arr.reduce((pre, curr) => parseInt(pre) + parseInt(curr[key]), 0);
+};
+
+export { createListBy, sum };

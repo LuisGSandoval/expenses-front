@@ -32,8 +32,7 @@ const AddExpenseForm = () => {
     let expenseToEdit = expensesList.filter(itm => itm.id === selectedItemId);
     expenseToEdit = expenseToEdit[0];
     const { id, income, description, title, qty, date, payed } = expenseToEdit;
-    let d = new Date(date);
-    d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    let d = new Date(date).getTime();
     dispatch({
       type: "EXPENSE_FORM",
       payload: {
@@ -104,7 +103,10 @@ const AddExpenseForm = () => {
     const { name, value } = e.target;
     dispatch({
       type: "EXPENSE_FORM",
-      payload: { ...expensesForm, [name]: value }
+      payload: {
+        ...expensesForm,
+        [name]: value
+      }
     });
   };
 
@@ -129,9 +131,11 @@ const AddExpenseForm = () => {
         <Input
           type="text"
           name="title"
+          placeholder="Titulo corto"
           value={title}
           id="title"
           required
+          maxlength="15"
           onChange={handleChange}
         />
       </FormGroup>
@@ -162,7 +166,6 @@ const AddExpenseForm = () => {
           }}
           className="form-control"
           placeholder="para pagar el: "
-          required={true}
           value={date}
           onChange={e => {
             dispatch({
@@ -178,6 +181,8 @@ const AddExpenseForm = () => {
         <Input
           type="textarea"
           name="description"
+          placeholder="Acá puedes escibir con más detalle"
+          maxLength="200"
           value={description}
           onChange={handleChange}
           id="description"

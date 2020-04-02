@@ -3,17 +3,19 @@ import { CTX } from "../../Store/Store";
 import {
   ListGroup,
   ListGroupItem,
-  ListGroupItemHeading,
-  ListGroupItemText
+  ListGroupItemText,
+  UncontrolledTooltip
 } from "reactstrap";
 import Navbar from "../../Components/Navbar";
 import AppModal from "../../Components/AppModal";
-
+import { sum } from "../../tools/tools";
 import { format } from "date-fns";
 import { GiReceiveMoney, GiPayMoney, GiOpenChest } from "react-icons/gi";
+import { GoCalendar } from "react-icons/go";
+import { FaRegLightbulb } from "react-icons/fa";
 
 const ExpenseList = props => {
-  const [state, dispatch] = useContext(CTX);
+  const [state] = useContext(CTX);
   const [list, setList] = useState([]);
 
   const { expensesList, editExpense, selectedItemId } = state;
@@ -23,10 +25,11 @@ const ExpenseList = props => {
       y = d.getFullYear(),
       m = d.getMonth();
 
-    var firstDate = new Date(y, m, 1).getTime();
-    var lastDate = new Date(y, m + 1, 0).getTime();
+    var firstDate = new Date(y, m, 1);
+    var lastDate = new Date(y, m + 1, 0);
 
-    var selectedExpenses = expensesList.filter(
+    let lsItms = JSON.parse(window.localStorage.getItem("expensesList"));
+    var selectedExpenses = lsItms.filter(
       exp => exp.date >= firstDate && exp.date <= lastDate
     );
 
@@ -41,14 +44,6 @@ const ExpenseList = props => {
     // eslint-disable-next-line
   }, [expensesList, editExpense, selectedItemId]);
 
-  const moreOPtions = id => {
-    dispatch({ type: "SELECTED_ITEM", payload: id });
-    dispatch({
-      type: "TOGGLE_MODAL",
-      payload: { open: true, content: "moreOptions" }
-    });
-  };
-
   return (
     <div className="bg-dark pb-5">
       <Navbar />
@@ -57,56 +52,151 @@ const ExpenseList = props => {
         <h4 className="text-white mt-3">
           {format(parseInt(props.match.params.date), "MMM-yyyy")}
         </h4>
-        <ListGroup>
-          {list
-            .sort((a, b) => a.income - b.income)
-            .map(item => (
-              <ListGroupItem
-                key={item.id}
-                className="bg-light text-center text-secondary"
-              >
-                <div className="row" onDoubleClick={() => moreOPtions(item.id)}>
-                  <div className="col-5">
-                    <ListGroupItemText>
-                      {item.title.toString().toUpperCase()}
-                      <br /> {item.description.toString().toLowerCase()}
-                    </ListGroupItemText>
-                  </div>
+        <ExpenseRealList list={list.filter(it => it.income === "0")} />
 
-                  <div className="col-5">
-                    <ListGroupItemHeading
-                      className={`text-${
-                        item.income === "1" ? "success" : "danger"
-                      }`}
-                    >
-                      $ {parseInt(item.qty).toLocaleString()}
-                    </ListGroupItemHeading>
-                    <i>{format(new Date(item.date), "yyyy-MMM-dd")}</i>
-                  </div>
-                  <div className="col-2">
-                    {item.payed && item.in && (
-                      <>
-                        <GiReceiveMoney className="text-success h2" /> <br />
-                        Pagado
-                      </>
-                    )}
-                    {item.payed && !item.in && (
-                      <>
-                        <GiPayMoney className="text-success h2" /> <br /> Pagado
-                      </>
-                    )}
-                    {!item.payed && (
-                      <>
-                        <GiOpenChest className="text-secondary h2" /> <br /> Sin
-                        pagar
-                      </>
-                    )}
-                  </div>
-                </div>
-              </ListGroupItem>
-            ))}
-        </ListGroup>
+        <ExpenseRealList list={list.filter(it => it.income === "1")} />
+
+        <ExpenseListBottomTotalizer
+          title="resultante"
+          total={
+            sum(
+              list.filter(it => it.income === "1"),
+              "qty"
+            ) -
+            sum(
+              list.filter(it => it.income === "0"),
+              "qty"
+            )
+          }
+        />
       </div>
+    </div>
+  );
+};
+
+export const ExpenseRealList = ({ list }) => {
+  const [, dispatch] = useContext(CTX);
+
+  const moreOPtions = id => {
+    dispatch({ type: "SELECTED_ITEM", payload: id });
+    dispatch({
+      type: "TOGGLE_MODAL",
+      payload: { open: true, content: "moreOptions" }
+    });
+  };
+  return (
+    <div className="mb-3">
+      <ListGroup className="p-0">
+        {list.map(item => (
+          <ListGroupItem
+            key={item.id}
+            className="bg-light text-center text-secondary"
+          >
+            <div className="row" onDoubleClick={() => moreOPtions(item.id)}>
+              <div className="col-1">
+                <GoCalendar
+                  className="text-secondary h3"
+                  id={`calendar-${item.id}`}
+                />
+                <UncontrolledTooltip
+                  placement="bottom"
+                  target={`calendar-${item.id}`}
+                >
+                  <i>{format(new Date(item.date), "yyyy-MMM-dd")}</i>
+                </UncontrolledTooltip>
+              </div>
+              <div className="col-1">
+                <FaRegLightbulb
+                  className="text-secondary h3"
+                  id={`details-${item.id}`}
+                />
+                <UncontrolledTooltip
+                  placement="bottom"
+                  target={`details-${item.id}`}
+                >
+                  <i>{item.description.toString().toLowerCase()}</i>
+                </UncontrolledTooltip>
+              </div>
+              <div className="col-4">
+                <ListGroupItemText className="capital">
+                  {item.title}
+                </ListGroupItemText>
+              </div>
+
+              <div className="col-4">
+                <ListGroupItemText
+                  className={`text-${
+                    item.income === "1" ? "success" : "danger"
+                  }`}
+                >
+                  $ {parseInt(item.qty).toLocaleString()}
+                </ListGroupItemText>
+              </div>
+              <div className="col-1">
+                {item.payed && item.in && (
+                  <>
+                    <GiReceiveMoney
+                      className="text-success h3"
+                      id={`payedToMe-${item.id}`}
+                    />
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target={`payedToMe-${item.id}`}
+                    >
+                      Pagado
+                    </UncontrolledTooltip>
+                  </>
+                )}
+                {item.payed && !item.in && (
+                  <>
+                    <GiPayMoney
+                      className="text-success h3"
+                      id={`payedByMe-${item.id}`}
+                    />
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target={`payedByMe-${item.id}`}
+                    >
+                      Pagado
+                    </UncontrolledTooltip>
+                  </>
+                )}
+                {!item.payed && (
+                  <>
+                    <GiOpenChest
+                      className="text-secondary h3"
+                      id={`notePayed-${item.id}`}
+                    />
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target={`notePayed-${item.id}`}
+                    >
+                      Sin pagar
+                    </UncontrolledTooltip>
+                  </>
+                )}
+              </div>
+            </div>
+          </ListGroupItem>
+        ))}
+      </ListGroup>
+
+      {list.length > 1 && (
+        <ExpenseListBottomTotalizer total={sum(list, "qty")} />
+      )}
+    </div>
+  );
+};
+
+export const ExpenseListBottomTotalizer = ({ title, total }) => {
+  return (
+    <div
+      className={`${
+        total < 1 ? "text-danger" : "text-secondary"
+      } card bg-light text-right px-4 pt-2`}
+    >
+      {title ? <span>{title}</span> : null}
+      <h4>$ {total}</h4>
     </div>
   );
 };

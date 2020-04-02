@@ -5,3 +5,11 @@ body {
 .monthly-card {
   text-decoration: none !important;
 }
+
+.textElipsis {
+  text-overflow: ellipsis;
+}
+
+.capital {
+  text-transform: capitalize;
+}

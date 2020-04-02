@@ -28,6 +28,12 @@ const Options = () => {
         <Button color="success" onClick={toogleModal}>
           Agregar
         </Button>
+        {/* <button
+          className="btn btn-danger"
+          onClick={() => window.localStorage.clear()}
+        >
+          borrar to
+        </button> */}
       </div>
     </div>
   );
