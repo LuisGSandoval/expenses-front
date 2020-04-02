@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CTX } from "../../../Store/Store";
 import {
   ListGroup,
@@ -13,16 +13,19 @@ import { format } from "date-fns";
 
 const MonthlyList = () => {
   const [state] = useContext(CTX);
+  const [data, setData] = useState([]);
+  const { expensesList, modal } = state;
 
-  let formatedDate = turnDayDateToZero(state.expensesList);
-
-  let groupedByDate = createListBy("date", formatedDate);
-  let expenses = groupExpenses(groupedByDate);
+  useEffect(() => {
+    let formatedDate = turnDayDateToZero(expensesList);
+    let groupedByDate = createListBy("date", formatedDate);
+    setData(groupExpenses(groupedByDate));
+  }, [expensesList, modal]);
 
   return (
     <div className="bg-dark pb-5">
       <div className="container">
-        {expenses.map((ele, i) => (
+        {data.map((ele, i) => (
           <Link
             key={i}
             className="pt-5 monthly-card"

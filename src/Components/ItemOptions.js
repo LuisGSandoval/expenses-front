@@ -29,6 +29,17 @@ const ItemOptions = () => {
     dispatch({ type: "EXPENSES_LIST", payload: [...others, ...filtered] });
   };
 
+  const editItem = () => {
+    dispatch({
+      type: "TOGGLE_MODAL",
+      payload: { open: true, content: "addExpense" }
+    });
+    dispatch({
+      type: "EDIT_EXPENSE",
+      payload: true
+    });
+  };
+
   return (
     <div>
       <Button outline color="danger" className="w-100" onClick={deleteItem}>
@@ -36,9 +47,19 @@ const ItemOptions = () => {
       </Button>
 
       {window.location.pathname.includes("expenses") && (
-        <Button outline color="success" className="w-100" onClick={toglePayed}>
-          cambiar estado de pagado
-        </Button>
+        <>
+          <Button
+            outline
+            color="success"
+            className="w-100"
+            onClick={toglePayed}
+          >
+            cambiar estado de pagado
+          </Button>
+          <Button outline color="info" className="w-100" onClick={editItem}>
+            Modificar
+          </Button>
+        </>
       )}
     </div>
   );

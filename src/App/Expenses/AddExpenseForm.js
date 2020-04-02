@@ -1,15 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { CTX } from "../../Store/Store";
 import { Button, Form, FormGroup, Label, Input, CustomInput } from "reactstrap";
 import Flatpickr from "react-flatpickr";
 import { uuid } from "uuidv4";
-import { useCallback } from "react";
 
 const AddExpenseForm = () => {
   const [state, dispatch] = useContext(CTX);
-  const { expensesForm, expensesList } = state;
-  const { title, qty, date, description, income } = expensesForm;
+  const { expensesForm, expensesList, editExpense, selectedItemId } = state;
+  const { title, qty, date, description, income, payed } = expensesForm;
 
+  // this function sanitize the fields on the form
   const addExpense = useCallback(
     () =>
       dispatch({
@@ -27,17 +27,67 @@ const AddExpenseForm = () => {
     [dispatch]
   );
 
+  // This executes in case the user edits an item
+  const findAndAddExpenseToForm = useCallback(() => {
+    let expenseToEdit = expensesList.filter(itm => itm.id === selectedItemId);
+    expenseToEdit = expenseToEdit[0];
+    const { id, income, description, title, qty, date, payed } = expenseToEdit;
+    let d = new Date(date);
+    d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    dispatch({
+      type: "EXPENSE_FORM",
+      payload: {
+        id,
+        income,
+        description,
+        title,
+        qty,
+        date: d,
+        payed
+      }
+    });
+  }, [dispatch, selectedItemId, expensesList]);
+
+  // This fills the fields of the form in case it's tp create a new item or to edit an old one
   useEffect(() => {
-    addExpense();
+    if (!editExpense) {
+      addExpense();
+    } else {
+      findAndAddExpenseToForm();
+    }
+  }, [addExpense, findAndAddExpenseToForm, editExpense]);
+
+  // Clears up the form when the component end its cycle
+  useEffect(() => {
     return () => {
       addExpense();
     };
-  }, [addExpense]);
+    // eslint-disable-next-line
+  }, []);
 
-  const createExpense = e => {
+  //
+  const executeForm = e => {
     e.preventDefault();
 
-    expensesList.push(expensesForm);
+    if (expensesForm.date === "") {
+      return alert("Por favor agregar una fecha");
+    }
+
+    if (!editExpense) {
+      expensesList.push(expensesForm);
+    } else {
+      let ind = expensesList.findIndex(x => x.id === selectedItemId);
+      expensesList.splice(ind, 1, expensesForm);
+
+      dispatch({
+        type: "EDIT_EXPENSE",
+        payload: false
+      });
+      dispatch({
+        type: "SELECTED_ITEM",
+        payload: false
+      });
+    }
 
     dispatch({
       type: "EXPENSES_LIST",
@@ -59,7 +109,7 @@ const AddExpenseForm = () => {
   };
 
   return (
-    <Form className="container my-3" onSubmit={createExpense}>
+    <Form className="container my-3" onSubmit={executeForm}>
       <div className="form-group">
         <label htmlFor="income">Tipo</label>
         <select
@@ -99,10 +149,10 @@ const AddExpenseForm = () => {
       </FormGroup>
 
       <div className="form-group">
-        <label htmlFor="datej">* Fecha</label>
+        <label htmlFor="date">* Fecha</label>
 
         <Flatpickr
-          id="dueDate"
+          id="date"
           options={{
             altFormat: "F j, Y",
             dateFormat: "D d-M-Y",
@@ -112,12 +162,12 @@ const AddExpenseForm = () => {
           }}
           className="form-control"
           placeholder="para pagar el: "
-          required
+          required={true}
           value={date}
           onChange={e => {
             dispatch({
               type: "EXPENSE_FORM",
-              payload: { ...expensesForm, date: e[0].toISOString() }
+              payload: { ...expensesForm, date: e[0].getTime() }
             });
           }}
         />
@@ -141,6 +191,7 @@ const AddExpenseForm = () => {
             id="payed"
             name="payed"
             label="Ya fue pagado"
+            checked={payed}
             onChange={e => {
               const { checked } = e.target;
               dispatch({
@@ -153,7 +204,7 @@ const AddExpenseForm = () => {
       </FormGroup>
 
       <div className="d-flex justify-content-around">
-        <Button>Crear</Button>
+        <Button>enviar</Button>
       </div>
     </Form>
   );

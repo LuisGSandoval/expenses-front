@@ -3,6 +3,7 @@ import Navbar from "../Components/Navbar";
 import { FiShoppingCart } from "react-icons/fi";
 import { Card, Button, CardTitle, CardText } from "reactstrap";
 import { Link } from "react-router-dom";
+import { GoGraph } from "react-icons/go";
 
 const Menu = () => {
   return (
@@ -12,10 +13,10 @@ const Menu = () => {
       <div className="container mt-5">
         <div className="row">
           <div className="col-12 col-md-6 p-5">
-            <Card className="text-center" body inverse color="dark">
+            <Card className="text-center" body inverse color="light">
               <CardTitle>
-                <span className="mr-4">Gastos</span>
-                <FiShoppingCart />
+                <span className="mr-4 text-dark">Gastos</span>
+                <GoGraph className="text-dark" />
               </CardTitle>
               <CardText className="text-secondary">
                 Haz un rastreo de tus gastos e ingresos
@@ -26,10 +27,10 @@ const Menu = () => {
             </Card>
           </div>
           <div className="col-12 col-md-6 p-5">
-            <Card className="text-center" body inverse color="dark">
+            <Card className="text-center" body inverse color="light">
               <CardTitle>
-                <span className="mr-4">Compras</span>
-                <FiShoppingCart />
+                <span className="mr-4 text-dark">Compras</span>
+                <FiShoppingCart className="text-dark" />
               </CardTitle>
               <CardText className="text-secondary">
                 Haz cuentas de tus compras y verifica si te alcanza el dinero

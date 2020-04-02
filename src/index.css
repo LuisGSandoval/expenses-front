@@ -2,12 +2,6 @@ body {
   min-height: 100vh;
 }
 
-.monthly-card:hover {
+.monthly-card {
   text-decoration: none !important;
-  transition: all 300ms;
-}
-
-.monthly-card:hover {
-  font-size: 1.2em;
-  transition: all 300ms;
 }

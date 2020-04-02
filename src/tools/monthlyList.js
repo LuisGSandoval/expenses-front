@@ -3,7 +3,8 @@
  */
 const turnDayDateToZero = arr => {
   let newArr = arr.map(item => {
-    item.date = item.date.split("T")[0].replace(/\d{2}$/, "01");
+    let d = new Date(item.date);
+    item.date = new Date(d.getFullYear(), d.getMonth(), "01").getTime();
     return item;
   });
   return newArr;

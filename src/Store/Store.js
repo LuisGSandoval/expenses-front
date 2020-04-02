@@ -49,6 +49,11 @@ function reducer(state, action) {
         ...state,
         expensesList: payload
       };
+    case "EDIT_EXPENSE":
+      return {
+        ...state,
+        editExpense: payload
+      };
     default:
       return Error("reducer error");
   }
@@ -60,14 +65,15 @@ function reducer(state, action) {
 const initialState = {
   // global
   modal: false,
+  selectedItemId: false,
 
   // shopping
   productList: LSGet(SL) ? LSGet(SL) : [],
-  selectedItemId: false,
 
   // Expenses
   expensesForm: LSGet(EF) ? LSGet(EF) : false,
-  expensesList: LSGet(EL) ? LSGet(EL) : []
+  expensesList: LSGet(EL) ? LSGet(EL) : [],
+  editExpense: false
 };
 
 export default function Store(props) {
