@@ -1,3 +1,4 @@
+import Options from "./Options";
 import React, { useContext, useEffect, useState } from "react";
 import { CTX } from "../../Store/Store";
 import {
@@ -18,7 +19,7 @@ const ExpenseList = props => {
   const [state] = useContext(CTX);
   const [list, setList] = useState([]);
 
-  const { expensesList, editExpense, selectedItemId } = state;
+  const { expensesList, editExpense, selectedItemId, modal } = state;
 
   const startComponent = () => {
     var d = new Date(parseInt(props.match.params.date)),
@@ -42,7 +43,7 @@ const ExpenseList = props => {
       setList([]);
     };
     // eslint-disable-next-line
-  }, [expensesList, editExpense, selectedItemId]);
+  }, [expensesList, editExpense, selectedItemId, modal]);
 
   return (
     <div className="bg-dark pb-5">
@@ -70,6 +71,7 @@ const ExpenseList = props => {
           }
         />
       </div>
+      <Options />
     </div>
   );
 };
@@ -87,98 +89,100 @@ export const ExpenseRealList = ({ list }) => {
   return (
     <div className="mb-3">
       <ListGroup className="p-0">
-        {list.map(item => (
-          <ListGroupItem
-            key={item.id}
-            className="bg-light text-center text-secondary"
-          >
-            <div className="row" onDoubleClick={() => moreOPtions(item.id)}>
-              <div className="col-1">
-                <GoCalendar
-                  className="text-secondary h3"
-                  id={`calendar-${item.id}`}
-                />
-                <UncontrolledTooltip
-                  placement="bottom"
-                  target={`calendar-${item.id}`}
-                >
-                  <i>{format(new Date(item.date), "yyyy-MMM-dd")}</i>
-                </UncontrolledTooltip>
-              </div>
-              <div className="col-1">
-                <FaRegLightbulb
-                  className="text-secondary h3"
-                  id={`details-${item.id}`}
-                />
-                <UncontrolledTooltip
-                  placement="bottom"
-                  target={`details-${item.id}`}
-                >
-                  <i>{item.description.toString().toLowerCase()}</i>
-                </UncontrolledTooltip>
-              </div>
-              <div className="col-4">
-                <ListGroupItemText className="capital">
-                  {item.title}
-                </ListGroupItemText>
-              </div>
+        {list
+          .sort((a, b) => a.payed - b.payed)
+          .map(item => (
+            <ListGroupItem
+              key={item.id}
+              className="bg-light text-center text-secondary"
+            >
+              <div className="row" onDoubleClick={() => moreOPtions(item.id)}>
+                <div className="col-1">
+                  <GoCalendar
+                    className="text-secondary h3"
+                    id={`calendar-${item.id}`}
+                  />
+                  <UncontrolledTooltip
+                    placement="bottom"
+                    target={`calendar-${item.id}`}
+                  >
+                    <i>{format(new Date(item.date), "yyyy-MMM-dd")}</i>
+                  </UncontrolledTooltip>
+                </div>
+                <div className="col-1">
+                  <FaRegLightbulb
+                    className="text-secondary h3"
+                    id={`details-${item.id}`}
+                  />
+                  <UncontrolledTooltip
+                    placement="bottom"
+                    target={`details-${item.id}`}
+                  >
+                    <i>{item.description.toString().toLowerCase()}</i>
+                  </UncontrolledTooltip>
+                </div>
+                <div className="col-4">
+                  <ListGroupItemText className="capital">
+                    {item.title}
+                  </ListGroupItemText>
+                </div>
 
-              <div className="col-4">
-                <ListGroupItemText
-                  className={`text-${
-                    item.income === "1" ? "success" : "danger"
-                  }`}
-                >
-                  $ {parseInt(item.qty).toLocaleString()}
-                </ListGroupItemText>
+                <div className="col-4">
+                  <ListGroupItemText
+                    className={`text-${
+                      item.income === "1" ? "success" : "danger"
+                    }`}
+                  >
+                    $ {parseInt(item.qty).toLocaleString()}
+                  </ListGroupItemText>
+                </div>
+                <div className="col-1">
+                  {item.payed && item.in && (
+                    <>
+                      <GiReceiveMoney
+                        className="text-success h3"
+                        id={`payedToMe-${item.id}`}
+                      />
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target={`payedToMe-${item.id}`}
+                      >
+                        Pagado
+                      </UncontrolledTooltip>
+                    </>
+                  )}
+                  {item.payed && !item.in && (
+                    <>
+                      <GiPayMoney
+                        className="text-success h3"
+                        id={`payedByMe-${item.id}`}
+                      />
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target={`payedByMe-${item.id}`}
+                      >
+                        Pagado
+                      </UncontrolledTooltip>
+                    </>
+                  )}
+                  {!item.payed && (
+                    <>
+                      <GiOpenChest
+                        className="text-secondary h3"
+                        id={`notePayed-${item.id}`}
+                      />
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target={`notePayed-${item.id}`}
+                      >
+                        Sin pagar
+                      </UncontrolledTooltip>
+                    </>
+                  )}
+                </div>
               </div>
-              <div className="col-1">
-                {item.payed && item.in && (
-                  <>
-                    <GiReceiveMoney
-                      className="text-success h3"
-                      id={`payedToMe-${item.id}`}
-                    />
-                    <UncontrolledTooltip
-                      placement="bottom"
-                      target={`payedToMe-${item.id}`}
-                    >
-                      Pagado
-                    </UncontrolledTooltip>
-                  </>
-                )}
-                {item.payed && !item.in && (
-                  <>
-                    <GiPayMoney
-                      className="text-success h3"
-                      id={`payedByMe-${item.id}`}
-                    />
-                    <UncontrolledTooltip
-                      placement="bottom"
-                      target={`payedByMe-${item.id}`}
-                    >
-                      Pagado
-                    </UncontrolledTooltip>
-                  </>
-                )}
-                {!item.payed && (
-                  <>
-                    <GiOpenChest
-                      className="text-secondary h3"
-                      id={`notePayed-${item.id}`}
-                    />
-                    <UncontrolledTooltip
-                      placement="bottom"
-                      target={`notePayed-${item.id}`}
-                    >
-                      Sin pagar
-                    </UncontrolledTooltip>
-                  </>
-                )}
-              </div>
-            </div>
-          </ListGroupItem>
-        ))}
+            </ListGroupItem>
+          ))}
       </ListGroup>
 
       {list.length > 1 && (

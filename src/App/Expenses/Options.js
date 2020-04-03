@@ -18,11 +18,11 @@ const Options = () => {
       <div className="container text-center">
         {window.location.pathname.includes("/expenses/monthly") ? (
           <Link className="btn btn-outline-secondary" to="/expenses">
-            ver grafica
+            grafica
           </Link>
         ) : (
           <Link className="btn btn-outline-secondary" to="/expenses/monthly">
-            ver detalle
+            mensual
           </Link>
         )}
         <Button color="success" className="ml-3" onClick={toogleModal}>
