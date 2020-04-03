@@ -1,6 +1,7 @@
 const SL = "shoppingListProducts";
 const EF = "expensesForm";
 const EL = "expensesList";
+const GD = "graphicsData";
 
 /**
  * LocalStorage.setItem will be used to sabe data in the locaStorage in the whole app
@@ -16,4 +17,4 @@ const LSAdd = (name, payload) =>
  */
 const LSGet = name => JSON.parse(window.localStorage.getItem(name));
 
-export { SL, EF, EL, LSAdd, LSGet };
+export { SL, EF, EL, GD, LSAdd, LSGet };

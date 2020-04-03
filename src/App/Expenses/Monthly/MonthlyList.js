@@ -17,9 +17,7 @@ const MonthlyList = () => {
   const { expensesList, modal } = state;
 
   useEffect(() => {
-    let newArr = expensesList.slice();
-
-    let formatedDate = turnDayDateToZero(newArr);
+    let formatedDate = turnDayDateToZero(expensesList);
     let groupedByDate = createListBy("date", formatedDate);
     setData(groupExpenses(groupedByDate));
   }, [expensesList, modal]);

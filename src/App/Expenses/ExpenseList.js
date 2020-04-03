@@ -182,7 +182,7 @@ export const ExpenseRealList = ({ list }) => {
       </ListGroup>
 
       {list.length > 1 && (
-        <ExpenseListBottomTotalizer total={sum(list, "qty")} />
+        <ExpenseListBottomTotalizer total={sum(list, "qty").toLocaleString()} />
       )}
     </div>
   );
@@ -196,7 +196,7 @@ export const ExpenseListBottomTotalizer = ({ title, total }) => {
       } card bg-light text-right px-4 pt-2`}
     >
       {title ? <span>{title}</span> : null}
-      <h4>$ {total}</h4>
+      <h4>$ {total.toLocaleString()}</h4>
     </div>
   );
 };

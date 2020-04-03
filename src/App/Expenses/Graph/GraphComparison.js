@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Line } from "react-chartjs-2";
+import { CTX } from "../../../Store/Store";
 
 const GraphComparison = () => {
+  const [state] = useContext(CTX);
+  const { graphicsData: gd } = state;
+
   return (
     <Line
       data={{
-        labels: ["Red", "Blue", "Yellow"],
+        labels: gd.months,
         datasets: [
           {
             label: "Gastos",
-            data: [790000, 300000, 200000],
+            data: gd.expenses,
             backgroundColor: "rgba(255, 99, 132, 0)",
             borderColor: "rgba(255, 99, 132, 1)",
             borderWidth: 1
           },
           {
-            label: "Ganancias",
-            data: [2640000, 7000000, 1000000],
+            label: "queda",
+            data: gd.moneyLeft,
             backgroundColor: "rgba(75, 192, 192, 0.2)",
             borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 1

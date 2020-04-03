@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from "react";
-import { SL, EF, EL } from "../tools/localStorage"; // Only names
+import { SL, EF, EL, GD } from "../tools/localStorage"; // Only names
 import { LSAdd, LSGet } from "../tools/localStorage"; // Functions
 
 const CTX = createContext();
@@ -43,6 +43,13 @@ function reducer(state, action) {
         expensesForm: payload
       };
 
+    case "GRAPHICS_DATA":
+      LSAdd(GD, payload);
+      return {
+        ...state,
+        graphicsData: payload
+      };
+
     case "EXPENSES_LIST":
       LSAdd(EL, payload);
       return {
@@ -73,7 +80,12 @@ const initialState = {
   // Expenses
   expensesForm: LSGet(EF) ? LSGet(EF) : false,
   expensesList: LSGet(EL) ? LSGet(EL) : [],
-  editExpense: false
+  editExpense: false,
+  graphicsData: {
+    months: [],
+    moneyLeft: [],
+    expenses: []
+  }
 };
 
 export default function Store(props) {

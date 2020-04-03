@@ -25,7 +25,7 @@ const Options = () => {
             ver detalle
           </Link>
         )}
-        <Button color="success" onClick={toogleModal}>
+        <Button color="success" className="ml-3" onClick={toogleModal}>
           Agregar
         </Button>
         {/* <button
