@@ -20,6 +20,7 @@ const Graph = () => {
 
   const prepareDateToRenderGraphs = () => {
     let formatedDate = turnDayDateToZero(expensesList);
+    formatedDate = formatedDate.sort( (a,b) => a.date - b.date )
     let groupedByDate = createListBy("date", formatedDate);
     let finalData = groupExpenses(groupedByDate);
 

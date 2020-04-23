@@ -18,6 +18,7 @@ const MonthlyList = () => {
 
   useEffect(() => {
     let formatedDate = turnDayDateToZero(expensesList);
+    formatedDate = formatedDate.sort( (a,b) => a.date - b.date ) 
     let groupedByDate = createListBy("date", formatedDate);
     setData(groupExpenses(groupedByDate));
   }, [expensesList, modal]);
