@@ -5,6 +5,7 @@ import Shopping from "./Shopping/Shopping";
 import Expenses from "./Expenses/Expenses";
 import MonthlyList from "./Expenses/Monthly/Monthly";
 import ExpenseList from "./Expenses/ExpenseList";
+import LocalStorageDisplay from "./Expenses/LocalStorageDisplay";
 
 const Router = () => {
   return (
@@ -16,6 +17,11 @@ const Router = () => {
           <Route path="/expenses/monthly" component={MonthlyList} exact />
           <Route path="/expenses/list" component={ExpenseList} exact />
           <Route path="/expenses/date/:date" component={ExpenseList} exact />
+          <Route
+            path="/expenses/localStorage"
+            component={LocalStorageDisplay}
+            exact
+          />
           <Route path="/" component={Menu} />
         </Switch>
       </BrowserRouter>

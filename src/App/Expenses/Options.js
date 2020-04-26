@@ -9,7 +9,7 @@ const Options = () => {
   const toogleModal = () => {
     dispatch({
       type: "TOGGLE_MODAL",
-      payload: { open: true, content: "addExpense" }
+      payload: { open: true, content: "addExpense" },
     });
   };
 
@@ -34,6 +34,10 @@ const Options = () => {
         >
           borrar to
         </button> */}
+        <br />
+        <Link to="/expenses/localStorage/" className="btn btn-link">
+          extraer data
+        </Link>
       </div>
     </div>
   );
