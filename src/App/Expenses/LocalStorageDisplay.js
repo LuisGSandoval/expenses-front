@@ -43,7 +43,6 @@ const LocalStorageDisplay = () => {
           <CardText>{jsonData.toString()}</CardText>
           <input type="hidden" value={jsonData.toString()} id="jsonData" />
         </CardBody>
-        <CardFooter>End of json de gastos</CardFooter>
       </Card>
 
       <Options />
